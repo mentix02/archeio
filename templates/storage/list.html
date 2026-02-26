@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}My Storage - ArcheIO{% endblock %}
+{% block list_active %}active{% endblock %}
+{% block body %}
+    <div class="container mt-4">
+        <h1 class="mb-4">My Storage</h1>
+        {% if uploads %}
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th scope="col">Filename</th>
+                        <th scope="col">Size</th>
+                        <th scope="col">Uploaded At</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for upload in uploads %}
+                        <tr>
+                            <td>
+                                <a href="{{ upload.file.url }}" target="_blank"
+                                   rel="noopener noreferrer">{{ upload }}</a>
+                            </td>
+                            <td>{{ upload.file.size | filesizeformat }}</td>
+                            <td>{{ upload.timestamp | date:"Y-m-d H:i" }}</td>
+                            <td>
+                                <a download href="{{ upload.file.url }}" class="btn btn-sm btn-primary">
+                                    <i class="bi bi-download"></i> Download
+                                </a>
+                                <a href="{% url 'storage:delete' upload.id %}" class="btn btn-sm btn-danger">
+                                    <i class="bi bi-trash-fill"></i> Delete
+                                </a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+
+                <!-- Pagination -->
+                {% if is_paginated %}
+                    <nav aria-label="Page navigation">
+                        <ul class="pagination justify-content-center">
+                            {% if page_obj.has_previous %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+                                       aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <span class="page-link" aria-hidden="true">&laquo;</span>
+                                </li>
+                            {% endif %}
+                            {% for num in paginator.page_range %}
+                                {% if page_obj.number == num %}
+                                    <li class="page-item active"><span class="page-link">{{ num }}</span></li>
+                                {% else %}
+                                    <li class="page-item"><a class="page-link" href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ num }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            {% if page_obj.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}"
+                                       aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <span class="page-link" aria-hidden="true">&raquo;</span>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                {% endif %}
+            </div>
+        {% elif not uploads and request.GET.q %}
+            <p>No files found matching your search query. <a href="{% url 'storage:list' %}">Clear search</a>.</p>
+        {% else %}
+            <p>You have not uploaded any files yet. <a href="{% url 'storage:upload' %}">Upload a file now!</a></p>
+        {% endif %}
+    </div>
+{% endblock %}

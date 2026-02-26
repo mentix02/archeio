@@ -30,13 +30,18 @@ DEFAULT_APPS = [
     'django.contrib.staticfiles',
 ]
 
+THIRD_PARTY_APPS = [
+    'django_filters',
+]
+
 LOCAL_APPS = [
     'apps.core.apps.CoreConfig',
     'apps.user.apps.UserConfig',
     'apps.storage.apps.StorageConfig',
 ]
 
-INSTALLED_APPS = DEFAULT_APPS + LOCAL_APPS + ['django_cleanup']
+# Make sure django_cleanup is last in the list.
+INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS + ['django_cleanup']
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

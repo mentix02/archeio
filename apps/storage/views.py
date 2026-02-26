@@ -1,9 +1,11 @@
 from django.urls import reverse_lazy
+from django_filters.views import FilterView
+from django.views.generic import CreateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import ListView, CreateView, DeleteView
 
 from apps.storage.models import FileUpload
 from apps.storage.forms import FileUploadForm
+from apps.storage.filters import FileUploadFilter
 
 
 class FileUploadCreateView(LoginRequiredMixin, CreateView):
@@ -18,21 +20,17 @@ class FileUploadCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class FileUploadListView(LoginRequiredMixin, ListView):
+class FileUploadListView(LoginRequiredMixin, FilterView):
 
     paginate_by = 25
     model = FileUpload
     ordering = '-timestamp'
     context_object_name = 'uploads'
+    filterset_class = FileUploadFilter
     template_name = 'storage/list.html'
 
     def get_queryset(self):
-        qs = FileUpload.objects.filter(owner=self.request.user)
-
-        if q := self.request.GET.get('q'):
-            qs = qs.filter(file__icontains=q)
-
-        return qs
+        return FileUpload.objects.filter(owner=self.request.user)
 
 
 class FileUploadDeleteView(LoginRequiredMixin, DeleteView):

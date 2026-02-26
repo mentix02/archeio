@@ -69,7 +69,7 @@
             {% if request.user.is_authenticated %}
                 <form class="d-flex" role="search" action="{% url 'storage:list' %}">
                     <div class="input-group me-3">
-                        <input name="q" class="form-control" type="search" placeholder="Search" aria-label="Search" value="{{ request.GET.q|default:'' }}">
+                        <input name="file" class="form-control" type="search" placeholder="Search" aria-label="Search" value="{{ request.GET.file|default:'' }}">
                         <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
                     </div>
                 </form>

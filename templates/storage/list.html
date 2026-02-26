@@ -26,10 +26,10 @@
                             <td>{{ upload.timestamp | date:"Y-m-d H:i" }}</td>
                             <td>
                                 <a download href="{{ upload.file.url }}" class="btn btn-sm btn-primary">
-                                    <i class="bi bi-download"></i> Download
+                                    <i class="bi bi-download"></i>
                                 </a>
                                 <a href="{% url 'storage:delete' upload.id %}" class="btn btn-sm btn-danger">
-                                    <i class="bi bi-trash-fill"></i> Delete
+                                    <i class="bi bi-trash-fill"></i>
                                 </a>
                             </td>
                         </tr>

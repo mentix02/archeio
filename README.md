@@ -7,11 +7,20 @@ So don't bother with your issues and pull requests. I won't be looking at them. 
 
 ## Installation
 
-Create a new virtual environment. Install the dependencies. Create a `.env` file with required variables. Run the server.
+It's as easy as 1...2...3...4...and 5!
+
+1. Create a new virtual environment.
+2. Install dependencies.
+3. Collect static files.
+4. Create an `.env` files with required variables.
+5. Run the server.
 
 ```shell
 # Install dependencies
 pip install -r requirements.txt
+
+# Collect static files
+./manage.py collectstatic --noinput
 
 # Setup env variables
 cat <<EOF > .env
@@ -25,4 +34,10 @@ gunicorn backend.wsgi --bind <your_ip>:<port>
 
 ## Screenshots
 
-
+![homepage](screenshots/home.png "Home Page")
+![login](screenshots/login.png "Login Page")
+![files](screenshots/list.png "List Page")
+![upload](screenshots/upload.png "Upload Page")
+![delete](screenshots/delete.png "Delete Page")
+![profile](screenshots/profile.png "Profile Page")
+![empty](screenshots/empty.png "Empty Page")
